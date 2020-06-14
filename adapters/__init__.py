@@ -10,7 +10,7 @@ adapter_by_type = {
     'Blinds': DimmableAdapter(),
     'Blinds Percentage': DimmableAdapter(),
     'Blinds Percentage Inverted': DimmableAdapter(),
-	'Venetian Blinds EU': OnOffSwitchAdapter(),
+    'Venetian Blinds EU': OnOffSwitchAdapter(),
     'On/Off': OnOffSwitchAdapter(),
     'Push On Button': OnOffSwitchAdapter(),
     'Push Off Button': OnOffSwitchAdapter(),
