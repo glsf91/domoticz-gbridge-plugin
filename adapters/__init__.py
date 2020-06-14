@@ -3,6 +3,7 @@ from adapters.on_off_switch_adapter import OnOffSwitchAdapter
 from adapters.scene_adapter import SceneAdapter
 from adapters.temperature_adapter import TemperatureAdapter
 from adapters.temperature_sensor_adapter import TemperatureSensorAdapter
+from adapters.open_close_switch_adapter import OpenCloseSwitchAdapter
 
 adapter_by_type = {
     'Dimmer': DimmableAdapter(),
@@ -10,7 +11,7 @@ adapter_by_type = {
     'Blinds': DimmableAdapter(),
     'Blinds Percentage': DimmableAdapter(),
     'Blinds Percentage Inverted': DimmableAdapter(),
-    'Venetian Blinds EU': OnOffSwitchAdapter(),
+    'Venetian Blinds EU': OpenCloseSwitchAdapter(),
     'On/Off': OnOffSwitchAdapter(),
     'Push On Button': OnOffSwitchAdapter(),
     'Push Off Button': OnOffSwitchAdapter(),
