@@ -7,11 +7,19 @@ class OpenCloseSwitchAdapter(Adapter):
         Adapter.__init__(self)
 
     def handleMqttMessage(self, device, data, action, domoticz_port):
-        if data == '0':
-             command = 'On'
+        if action == 'openclose':
+            if data == '0':
+                command = 'On'
+            else:
+                command = 'Off'
+        elif action == 'startstop':
+            if data == 'stop':
+                command = 'Stop'
+            else:
+                return
         else:
-             command = 'Off'
-
+            return
+		
         params = {
             'param': self.getParamType(),
             'idx': self.determineDeviceId(device),
