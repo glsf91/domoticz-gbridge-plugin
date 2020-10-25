@@ -1,5 +1,6 @@
 from adapters.base_adapter import Adapter
 import urllib.parse
+import re
 
 class OpenCloseSwitchAdapter(Adapter):
 
