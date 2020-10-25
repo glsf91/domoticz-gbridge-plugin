@@ -41,8 +41,22 @@ class OpenCloseSwitchAdapter(Adapter):
         self.publishState(mqtt_client, device, base_topic, message['nvalue'])
 
     def publishState(self, mqtt_client, device, base_topic, value):
-        base_topic = base_topic + '/' + str(self.determineDeviceIdOrName(device)) + '/openclose/set'
-        mqtt_client.Publish(base_topic, value)
+        if value == 0:        # open
+            topic = base_topic + '/' + str(self.determineDeviceIdOrName(device)) + '/openclose/set'
+            mqtt_client.Publish(topic, '100')
+            topic = base_topic + '/' + str(self.determineDeviceIdOrName(device)) + '/startstop/set'
+            mqtt_client.Publish(topic, 'start')   # makes possible to stop 
+
+        if value == 1:        # close
+            topic = base_topic + '/' + str(self.determineDeviceIdOrName(device)) + '/openclose/set'
+            mqtt_client.Publish(topic, '0')
+            topic = base_topic + '/' + str(self.determineDeviceIdOrName(device)) + '/startstop/set'
+            mqtt_client.Publish(topic, 'start')   # makes possible to start
+
+        if value == 17:       # stop
+            topic = base_topic + '/' + str(self.determineDeviceIdOrName(device)) + '/startstop/set'
+            mqtt_client.Publish(topic, 'stop')
+
 
     def determineDeviceId(self, device):
         return device['idx']
