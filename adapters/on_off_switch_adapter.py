@@ -1,5 +1,6 @@
 from adapters.base_adapter import Adapter
 import urllib.parse
+import re
 
 class OnOffSwitchAdapter(Adapter):
 
@@ -37,8 +38,20 @@ class OnOffSwitchAdapter(Adapter):
         self.publishState(mqtt_client, device, base_topic, message['nvalue'])
 
     def publishState(self, mqtt_client, device, base_topic, value):
-        base_topic = base_topic + '/' + str(self.determineDeviceId(device)) + '/onoff/set'
+        base_topic = base_topic + '/' + str(self.determineDeviceIdOrName(device)) + '/onoff/set'
         mqtt_client.Publish(base_topic, value)
 
     def determineDeviceId(self, device):
         return device['idx']
+		
+    def determineDeviceIdOrName(self, device):
+        if "gBridge" in device['Description']:
+            match = re.search('gBridge:(.*)([\n|\r]?)', device['Description'])
+            if match:
+                res = match.group(1).strip()
+            else:
+                res = device['idx']
+        else:
+            res = device['idx']
+        return res
+
