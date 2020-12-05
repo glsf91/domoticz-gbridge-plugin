@@ -4,6 +4,7 @@ from adapters.scene_adapter import SceneAdapter
 from adapters.temperature_adapter import TemperatureAdapter
 from adapters.temperature_sensor_adapter import TemperatureSensorAdapter
 from adapters.open_close_switch_adapter import OpenCloseSwitchAdapter
+import Domoticz
 
 adapter_by_type = {
     'Dimmer': DimmableAdapter(),
@@ -26,8 +27,10 @@ adapter_by_type = {
 
 def getAdapter(device):
     if 'SwitchType' in device and device['SwitchType'] in adapter_by_type:
+        Domoticz.Debug('getAdapter SwitchType: %s' % (device['SwitchType']))
         # Specific adapter for this switch type
         return adapter_by_type[device['SwitchType']]
     elif 'Type' in device and device['Type'] in adapter_by_type:
+        Domoticz.Debug('getAdapter Type: %s' % (device['Type']))
         return adapter_by_type[device['Type']]
     return None

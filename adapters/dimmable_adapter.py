@@ -1,4 +1,5 @@
 import urllib.parse
+import re
 
 from adapters.on_off_switch_adapter import OnOffSwitchAdapter
 
@@ -29,7 +30,7 @@ class DimmableAdapter(OnOffSwitchAdapter):
 
     def publishStateFromDomoticzTopic(self, mqtt_client, device, base_topic, message):
         OnOffSwitchAdapter.publishStateFromDomoticzTopic(self, mqtt_client, device, base_topic, message)
-        base_topic = base_topic + '/' + str(message['idx'])
+        base_topic = base_topic + '/' + str(self.determineDeviceIdOrName(device))
         if message.get('svalue1') is not None:
             mqtt_client.Publish(base_topic + '/brightness/set', str(message['svalue1']))
         if message.get('Color') is not None:
@@ -40,3 +41,14 @@ class DimmableAdapter(OnOffSwitchAdapter):
     def publishState(self, mqtt_client, device, base_topic, value):
         OnOffSwitchAdapter.publishState(self, mqtt_client, device, base_topic, value)
         # todo check how to set the brightness next to on/off
+
+    def determineDeviceIdOrName(self, device):
+        if "gBridge" in device['Description']:
+            match = re.search('gBridge:(.*)([\n|\r]?)', device['Description'])
+            if match:
+                res = match.group(1).strip()
+            else:
+                res = device['idx']
+        else:
+            res = device['idx']
+        return res
